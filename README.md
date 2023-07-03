@@ -16,7 +16,7 @@ pip install opencv-python
 > 使用moviepy对视频的片段进行提取并保存为新的文件
 * 视频拼接 video_merging.py
 > 使用moviepy对视频文件进行先后拼接
-* 视频画面拼接 video_wall.py
+* 视频墙 video_wall.py
 > 使用opencv+numpy将多个视频按照类似监控的样式堆叠在同一个画面中（视频墙）
 ### 视频格式转换 convert_video_format
 * 视频格式转换 video_to_video.py
