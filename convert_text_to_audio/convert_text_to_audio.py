@@ -7,7 +7,7 @@ import subprocess
 import os
 
 
-def text_to_audio(text, sampling_rate, speed_rate, volume_rate):
+def text_to_audio(text, sampling_rate, bitrate, speed_rate, volume_rate, ext):
     root_dir = "storage"
     # 如果mp3文件不存在则尝试从有道api中获取一次文件
     if not os.path.exists(f"{root_dir}/{text}.mp3"):
@@ -17,12 +17,14 @@ def text_to_audio(text, sampling_rate, speed_rate, volume_rate):
         mp3.write(res.content)
 
     # 使用ffmpeg设置音频参数
-    if not os.path.exists(f"{root_dir}/{text}_{sampling_rate}_{speed_rate}_{volume_rate}.mp3"):
+    target_dir = f"{root_dir}/{text}_{sampling_rate}_{bitrate}_{speed_rate}_{volume_rate}.{ext}"
+    if not os.path.exists(target_dir):
         subprocess.run([
             "ffmpeg", "-i", f"{root_dir}/{text}.mp3", 
-            "-b:a", f"{str(sampling_rate)}k",                                       # 设置比特率
+            "-ar", f"{str(sampling_rate)}",                                         # 设置采样率                                      
+            "-b:a", f"{str(bitrate)}k",                                             # 设置比特率
             "-filter:a", f"atempo={str(speed_rate)},volume={str(volume_rate)}",     # 设置播放速度以及音量
-            f"{root_dir}/{text}_{sampling_rate}_{speed_rate}_{volume_rate}.mp3"
+            f"{target_dir}"
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
-text_to_audio("你好，世界", 128, 1.5, 3.0)
+text_to_audio("你好，世界", 20000, 128, 1.5, 3.0, "wav")
